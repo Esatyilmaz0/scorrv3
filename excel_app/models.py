@@ -34,10 +34,10 @@ class HamVeri(models.Model):
     department_code = models.CharField(verbose_name="Department", max_length=5000)
     quantity = models.IntegerField(verbose_name="Quantity")
     ust_ekipman = models.CharField(verbose_name="Üst Ekipman", max_length=5000, default="")
-    
-    
+
+
 class RaporReferanslari(models.Model):
-    
+
     sorgu_no = models.CharField(verbose_name="Sorgu No", max_length=5000)
     ref = models.CharField(verbose_name="Ref", max_length=5000)
     ekipman_parca_kodu = models.CharField(verbose_name="Ekipman Parça Kodu", max_length=5000)
@@ -63,17 +63,20 @@ class RaporGirdiler(models.Model):
     kategori = models.CharField(verbose_name="Kategori", max_length=50)
     sorgu_no = models.CharField(verbose_name="Sorgu No", max_length=50)
     aciklama = models.CharField(verbose_name="Açıklama", max_length=5000,blank=True,null=False, default="")
-    
+
     def __str__(self) -> str:
         return self.kontrol
-    
+
 class Log(models.Model):
     user = models.ForeignKey("auth.User", on_delete=models.CASCADE, verbose_name="Kullanıcı")
+    saha_no = models.CharField(verbose_name="Saha No", max_length=50)
+    saha_kod = models.CharField(verbose_name="Saha Kod", max_length=50)
+
     description = models.TextField(verbose_name="Yaptığı İşlem", max_length=9999999)
     created_at = models.DateTimeField(verbose_name="Oluşturulma Tarihi", auto_now_add=True)
-    
+
     def __str__(self) -> str:
         return self.user.username
-    
 
-    
+
+

@@ -77,9 +77,9 @@ def rapor_calistir(ham_veri_values, saha_no, sorgu_list_values, rapor_referansla
 
     data_fix = pd.DataFrame(data[['saha_no', 'saha_kodu', 'ekipman_parca_kodu', 'parca_tanimi', 'quantity']])
     basla = data_fix.drop_duplicates(subset=["saha_no", "saha_kodu"]).reset_index()
-    
+
     for h in basla.index[0:]:
-        
+
         # Envanter dosyasında saha_no ve ID bilgileri alınır
         Saha_Nox = str(basla.iloc[h, 1])
         Saha_Kodu = (basla.iloc[h, 2])
@@ -98,7 +98,7 @@ def rapor_calistir(ham_veri_values, saha_no, sorgu_list_values, rapor_referansla
             grupby_data = (pd.merge(data_fix_1, sorgu_fix_1, how="inner"))
 
             # Birleştirilen tabloları da ki referans parç kodlarına göre malzeme toplamları yapılır.
-            Ref_Kon = grupby_data.groupby(by=['ref']).sum()['quantity'].reset_index() 
+            Ref_Kon = grupby_data.groupby(by=['ref']).sum()['quantity'].reset_index()
 
             Ref_1 = 0
             Ref_2 = 0
@@ -136,7 +136,7 @@ def rapor_calistir(ham_veri_values, saha_no, sorgu_list_values, rapor_referansla
                     Ref_02 = Ref_y
                 elif Ref_x == 'Ref_03':
                     Ref_03 = Ref_y
-            
+
             # Excel okuma ile Analiz satırlarını birleştiriyoruz. 2. Bölüm Değişkenler ile analiz ve rapor souşturma
             if Ref_1 + Ref_2 + Ref_3 + Ref_4 + Ref_5 + Ref_6 == 0:
                 continue
@@ -534,8 +534,8 @@ def rapor_calistir(ham_veri_values, saha_no, sorgu_list_values, rapor_referansla
 #            cursor.execute(sql_string, (Saha_No, Saha_Kodu, Ref_1, Ref_2, Ref_3, Ref_4, Ref_5, Ref_6, Ref_Grup, Sonuc, Kontrol, Kategori, Sorgu_Noxx, Bilgi))
 
             print(Ref_2)
-            
-            girdi, created = RaporGirdiler.objects.get_or_create(saha_no=Saha_Nox, saha_kod=Saha_Kodu, ref_1=Ref_1, ref_2=Ref_2, ref_3=Ref_3, ref_4=Ref_4, ref_5=Ref_5, ref_6=Ref_6, ref_grup=Ref_Grup, sonuc=Sonuc, kontrol=Kontrol, kategori=Kategori, sorgu_no=Sorgu_Noxx, aciklama=Bilgi)
+
+            girdi, created = RaporGirdiler.objects.get_or_create(saha_no=Saha_Nox, saha_kod=Saha_Kodu, ref_1=Ref_1, ref_2=Ref_2, ref_3=Ref_3, ref_4=Ref_4, ref_5=Ref_5, ref_6=Ref_6, ref_grup=Ref_Grup, sonuc=Sonuc, kontrol=Kontrol, kategori=Kategori, sorgu_no=Sorgu_Noxx)
             if created:
                 print("created")
                 girdiler.append(girdi)

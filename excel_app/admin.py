@@ -32,37 +32,49 @@ class HamVeriAdmin(ImportExportModelAdmin):
     list_display = ["saha_no", "saha_kodu"]
     resource_class = HamVeriResource
     exclude = exclude_data
-    
+
 class RaporReferanslariResource(resources.ModelResource):
     class Meta:
         model = RaporReferanslari
         exclude = ["grup_tanimi", "rapor_tanimi", "ref_grup", "kategori", "analiz_no"]
 
 class RaporReferanslariAdmin(ImportExportModelAdmin):
+    list_display = ["id", "sorgu_no", "ref", "ekipman_parca_kodu", "parca_tanimi"]
     class Meta:
         resource_class = RaporReferanslariResource
 
 class RaporGirdilerResource(resources.ModelResource):
     class Meta:
         model = RaporGirdiler
-        
+
 class RaporGirdilerAdmin(ImportExportModelAdmin):
-    resource_class = RaporGirdilerResource
     list_display = ["id", "saha_no", "saha_kod", "aciklama"]
     search_fields = ["id"]
+    class Meta:
+        resource_class = RaporGirdilerResource
+
 class SorguListResource(resources.ModelResource):
     class Meta:
         model = SorguList
 
 class SorguListAdmin(ImportExportModelAdmin):
+    list_display = ["id", "sorgu_no", "kontrol"]
     class Meta:
         resource_class = SorguListResource
 
-class LogAdmin(admin.ModelAdmin):
+
+class LogResource(resources.ModelResource):
+    class Meta:
+        model = Log
+
+class LogAdmin(ImportExportModelAdmin):
+
     list_display = ["id", "user", "description", "created_at"]
     search_fields = ["id", "user"]
     list_filter = ["created_at"]
-    
+    class Meta:
+        resource_class = LogResource
+
 admin.site.register(SorguList, SorguListAdmin)
 
 admin.site.register(RaporGirdiler, RaporGirdilerAdmin)

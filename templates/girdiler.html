@@ -1,9 +1,7 @@
 
 {% for girdi in data %}
 <tr>
-                    <td></td>
-                    <td>{{girdi.saha_no}}</td>
-                    <td>{{girdi.saha_kod}}</td>
+                    <td>{{girdi.saha_no}} - {{girdi.saha_kod}}</td>
                     <td>{{girdi.ref_1}}</td>
                     <td>{{girdi.ref_2}}</td>
                     <td>{{girdi.ref_3}}</td>
@@ -12,10 +10,9 @@
                     <td>{{girdi.ref_6}}</td>
                     <td>{{girdi.ref_grup}}</td>
                     <td>{{girdi.sonuc}}</td>
-                    <td>{{girdi.kontrol}}</td>
                     <td>{{girdi.kategori}}</td>
                     <td>{{girdi.sorgu_no}}</td>
-                    <td><input class="form-control" readonly value="{{girdi.aciklama}}"></td>
-                    <td><button type="button" class="btn btn-outline-dark save" data-id="{{girdi.id}}">Save</button></td>
+                    <td><input class="form-control" value="{{girdi.aciklama}}"></td>
+                    <td><button type="button" class="btn btn-outline-dark save" data-id="{{girdi.id}}" data-saha_no="{{girdi.saha_no}}" data-saha_kod="{{girdi.saha_kod}}">Save</button></td>
                   </tr>
 {% endfor %}

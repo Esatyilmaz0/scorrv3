@@ -33,13 +33,10 @@
         {% endfor %}
     </select>
     <button class="btn btn-outline-dark run">Run</button>
-            <table id="dt-basic-checkbox" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <table id="dt-basic" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                   <tr>
-                    <th></th>
-                    <th class="th-sm">Saha No
-                    </th>
-                    <th class="th-sm">Saha Kod
+                    <th class="th-sm">Saha No - Saha Kod
                     </th>
                     <th class="th-sm">Ref 1
                     </th>
@@ -57,7 +54,6 @@
                     </th>
                     <th class="th-sm">Sonuc
                     </th>
-                    <th class="th-sm">Kontrol</th>
                     <th class="th-sm">Kategori</th>
                     <th class="th-sm">Sorgu No</th>
                     <th class="th-sm">Açıklama</th>
@@ -65,36 +61,28 @@
                   </tr>
                 </thead>
                 <tbody class="tbody">
-                
+
                 </tbody>
-                
+
               </table>
               </div>
         </div>
     </div>
 </div>
-    
+
 
     <script>
     $(".run").click(() => {
+
        var saha_no = $("#select").val()
-       console.log(saha_no)
+
        $.get("/girdiler?saha_no=" + saha_no, (res) => {
            $(".tbody").html("")
            $(".tbody").html(res)
-               $('#dt-basic-checkbox').dataTable({
+               $('#dt-basic').dataTable({
         scrollX:true,
         scrollY:true,
         destroy:true,
-        columnDefs: [{
-        orderable: false,
-        className: 'select-checkbox',
-        targets: 0
-        }],
-        select: {
-        style: 'os',
-        selector: 'td:first-child'
-        }
         });
         $(".save").click(function(){
             var girdi_id = $(this)[0].dataset.id
@@ -104,17 +92,7 @@
                 console.log(res)
             })
         })
-        $(".select-checkbox").click(
-            function(el){
-                var parent = $(el.target).parent()
-                if(!parent.hasClass("selected")){
-                    $(parent).find("input").removeAttr("readonly")
-                }
-                else{
-                    $(parent).find("input").attr("readonly", "true")
-                }
-            })    
-       })
+    })
     })
 </script>
 </body>
