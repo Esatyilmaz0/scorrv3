@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export import resources
-from .models import Log, RaporGirdiler, HamVeri, RaporReferanslari, SorguList
+from .models import Log, Rapor, RaporGirdiler, HamVeri, RaporReferanslari, SorguList
 # Register your models here.
 from import_export.admin import ImportExportModelAdmin
 
@@ -53,6 +53,17 @@ class RaporGirdilerAdmin(ImportExportModelAdmin):
     class Meta:
         resource_class = RaporGirdilerResource
 
+
+class RaporResource(resources.ModelResource):
+    class Meta:
+        model = Rapor
+
+class RaporAdmin(ImportExportModelAdmin):
+    list_display = ["id", "saha_no", "user"]
+    search_fields = ["id"]
+    class Meta:
+        resource_class = RaporResource
+
 class SorguListResource(resources.ModelResource):
     class Meta:
         model = SorguList
@@ -84,3 +95,4 @@ admin.site.register(RaporReferanslari, RaporReferanslariAdmin)
 admin.site.register(HamVeri, HamVeriAdmin)
 
 admin.site.register(Log, LogAdmin)
+admin.site.register(Rapor, RaporAdmin)

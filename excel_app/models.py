@@ -2,6 +2,12 @@ from django.db import models
 
 # Create your models here.
 
+class Rapor(models.Model):
+    user = models.ForeignKey("auth.User", on_delete=models.CASCADE)
+    saha_no = models.CharField(verbose_name="Saha No", max_length=9999, default="")
+    created_at = models.DateTimeField(verbose_name="Oluşturulma Tarihi", auto_now_add=True)
+    
+
 class SorguList(models.Model):
     sorgu_no = models.CharField(verbose_name="Sorgu No", max_length=5000, default="")
     kontrol = models.CharField(verbose_name="Kontrol", max_length=5000, default="")
@@ -63,7 +69,7 @@ class RaporGirdiler(models.Model):
     kategori = models.CharField(verbose_name="Kategori", max_length=50, default="")
     sorgu_no = models.CharField(verbose_name="Sorgu No", max_length=50, default="")
     aciklama = models.CharField(verbose_name="Açıklama", max_length=5000,blank=True,null=False, default="")
-
+    rapor_id = models.ForeignKey(Rapor, related_name="rapor", on_delete=models.CASCADE)
     def __str__(self) -> str:
         return self.kontrol
 

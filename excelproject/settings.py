@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-z_v&$)kuv&cp2i$g(rksnfqycqam^x#5l_7#bkzp0s)s6nhjq8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['testscorr.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'excel_app',
-    'import_export'
+    'import_export',
+    'verify_email.apps.VerifyEmailConfig'
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'excelproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
+        'DIRS': ["templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -107,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'tr-tr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Istanbul'
 
 USE_I18N = True
 
@@ -120,7 +121,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static")
+]
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -128,5 +133,22 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = Path(BASE_DIR / 'media')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "scor.rapor@gmail.com"
+EMAIL_HOST_PASSWORD = "scor_rapor2021"
+
+DEFAULT_FROM_EMAIL = 'scor.rapor@gmail.com'
+
+
+# Email Verification Settings
+
+LOGIN_URL = "login"
+
+SUBJECT = "Scor E-Mail Aktivasyonu"
+HTML_MESSAGE_TEMPLATE = "email_verification/template.html"
+VERIFICATION_SUCCESS_TEMPLATE = "email_verification/success.html"
+VERIFICATION_FAILED_TEMPLATE = "email_verification/failed.html"
