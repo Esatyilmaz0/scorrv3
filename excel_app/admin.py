@@ -1,6 +1,6 @@
 from django.contrib import admin
 from import_export import resources
-from .models import Log, Rapor, RaporGirdiler, HamVeri, RaporReferanslari, SorguList
+from .models import Departmanlar, Log, Rapor, RaporEnvanter, SayimRapor, SayimOncesiEnvanter, RaporReferanslari, SayimSonrasiEnvanter, SorguList, UserProfile
 # Register your models here.
 from import_export.admin import ImportExportModelAdmin
 
@@ -24,7 +24,7 @@ exclude_data = ("stok_tipi_1",
 
 class HamVeriResource(resources.ModelResource):
     class Meta:
-        model = HamVeri
+        model = SayimOncesiEnvanter
         exclude = exclude_data
         batch_size = 100000000000
 
@@ -39,13 +39,14 @@ class RaporReferanslariResource(resources.ModelResource):
         exclude = ["grup_tanimi", "rapor_tanimi", "ref_grup", "kategori", "analiz_no"]
 
 class RaporReferanslariAdmin(ImportExportModelAdmin):
+    change_list_template = "admin/clear_referans.html"
     list_display = ["id", "sorgu_no", "ref", "ekipman_parca_kodu", "parca_tanimi"]
     class Meta:
         resource_class = RaporReferanslariResource
 
 class RaporGirdilerResource(resources.ModelResource):
     class Meta:
-        model = RaporGirdiler
+        model = SayimRapor
 
 class RaporGirdilerAdmin(ImportExportModelAdmin):
     list_display = ["id", "saha_no", "saha_kod", "aciklama"]
@@ -59,7 +60,7 @@ class RaporResource(resources.ModelResource):
         model = Rapor
 
 class RaporAdmin(ImportExportModelAdmin):
-    list_display = ["id", "saha_no", "user"]
+    list_display = ["id", "saha_no", "saha_kod", "user", "department_code"]
     search_fields = ["id"]
     class Meta:
         resource_class = RaporResource
@@ -69,6 +70,7 @@ class SorguListResource(resources.ModelResource):
         model = SorguList
 
 class SorguListAdmin(ImportExportModelAdmin):
+    change_list_template = "admin/clear_sorgulist.html"
     list_display = ["id", "sorgu_no", "kontrol"]
     class Meta:
         resource_class = SorguListResource
@@ -86,13 +88,39 @@ class LogAdmin(ImportExportModelAdmin):
     class Meta:
         resource_class = LogResource
 
+class DepartmanlarAdmin(admin.ModelAdmin):
+    model = Departmanlar
+    list_display = ["code"]
+
+
+"""class SayimRaporResource(resources.ModelResource):
+    class Meta:
+        model = SayimSonrasiRapor"""
+
+"""class SayimRaporAdmin(ImportExportModelAdmin):
+    resource_class = SayimRaporResource
+    list_display = ["id", "saha_no", "saha_kod", "seri", "sayim", "aciklama"]"""
+
+class SayimSonrasiEnvanterResource(resources.ModelResource):
+    class Meta:
+        model = SayimSonrasiEnvanter
+
+class SayimSonrasiEnvanterAdmin(ImportExportModelAdmin):
+    resource_class = SayimSonrasiEnvanterResource
+    list_display = ["id", "saha_no", "saha_kodu", "sayim", "aciklama"]
+
 admin.site.register(SorguList, SorguListAdmin)
 
-admin.site.register(RaporGirdiler, RaporGirdilerAdmin)
+admin.site.register(SayimRapor, RaporGirdilerAdmin)
 
 admin.site.register(RaporReferanslari, RaporReferanslariAdmin)
 
-admin.site.register(HamVeri, HamVeriAdmin)
+admin.site.register(SayimOncesiEnvanter, HamVeriAdmin)
 
 admin.site.register(Log, LogAdmin)
 admin.site.register(Rapor, RaporAdmin)
+admin.site.register(Departmanlar, DepartmanlarAdmin)
+#admin.site.register(SayimSonrasiRapor, SayimRaporAdmin)
+admin.site.register(SayimSonrasiEnvanter, SayimSonrasiEnvanterAdmin)
+admin.site.register(UserProfile)
+admin.site.register(RaporEnvanter)

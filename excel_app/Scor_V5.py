@@ -8,7 +8,7 @@ from tkinter import messagebox
 import datetime
 import pandas as pd
 import os
-from .models import RaporGirdiler
+from .models import SayimRapor
 
 def rapor_calistir_(ham_veri, sorgu_list_, sorgu_ref_, saha_no, rapor):
 
@@ -70,12 +70,18 @@ def rapor_calistir_(ham_veri, sorgu_list_, sorgu_ref_, saha_no, rapor):
 
     sorgu_ref = sorgu_ref_
     sorgu_list = sorgu_list_
-
+    is_sayim_sonrasi_envanter = False
     for col in data.columns:
 
         if "Saha No" == col:
             data_fix = pd.DataFrame(data[['Saha No', 'Saha Kodu', 'Ekipman Parca Kodu', 'Parca Tanimi', 'Quantity']])
             break
+        
+        elif "sayim" == col:
+            
+            is_sayim_sonrasi_envanter = True
+            break
+        
         elif "Kullanıcı" == col:
             data_fix = pd.DataFrame(data[['Lokasyon Kodu', 'Kullanıcı', 'Kalem Kodu', 'Kalem Tanımı', 'Miktar', 'Sayım Fark', 'Transfer Edilen Adet', 'Zimmet Departmani']])
             data_fix = data_fix.rename(columns={'Lokasyon Kodu': 'Saha No', 'Kullanıcı': 'Saha Kodu', 'Kalem Kodu': 'Ekipman Parca Kodu', 'Kalem Tanımı': 'Parca Tanimi', 'Miktar': 'Quantity'}, inplace=False)
@@ -538,14 +544,17 @@ def rapor_calistir_(ham_veri, sorgu_list_, sorgu_ref_, saha_no, rapor):
                     Sonuc = "Uyumsuz"
                 else:
                     Sonuc = "Uyumlu"
-
             
-            girdi, created = RaporGirdiler.objects.get_or_create(saha_no=Saha_Nox, saha_kod=Saha_Kodu, ref_1=Ref_1, ref_2=Ref_2, ref_3=Ref_3, ref_4=Ref_4, ref_5=Ref_5, ref_6=Ref_6, ref_grup=Ref_Grup, sonuc=Sonuc, kontrol=Kontrol, kategori=Kategori, sorgu_no=Sorgu_Nox, rapor_id=rapor)
-            if created:
-                print("created")
-                girdiler.append(girdi)
-            else:
-                girdiler.append(girdi)
+                
+            if rapor.saha_kod != Saha_Kodu:
+                rapor.saha_kod = Saha_Kodu
+                rapor.save()
+                
+            girdi = SayimRapor(saha_no=Saha_Nox, saha_kod=Saha_Kodu, ref_1=Ref_1, ref_2=Ref_2, ref_3=Ref_3, ref_4=Ref_4, ref_5=Ref_5, ref_6=Ref_6, ref_grup=Ref_Grup, sonuc=Sonuc, kontrol=Kontrol, kategori=Kategori, sorgu_no=Sorgu_Nox, rapor=rapor)
+            if is_sayim_sonrasi_envanter:
+                girdi.is_sayim_sonrasi = True
+            girdi.save()
+            girdiler.append(girdi)
 
 
 # Parça Kodlarını Rapora eklenecek <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<

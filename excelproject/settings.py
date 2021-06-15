@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'excel_app',
     'import_export',
-    'verify_email.apps.VerifyEmailConfig'
+    'verify_email.apps.VerifyEmailConfig',
+    "captcha"
 ]
 
 MIDDLEWARE = [
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'excelproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["templates"],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,8 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [ os.path.join(BASE_DIR, "static")
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -149,6 +149,6 @@ DEFAULT_FROM_EMAIL = 'scor.rapor@gmail.com'
 LOGIN_URL = "login"
 
 SUBJECT = "Scor E-Mail Aktivasyonu"
-HTML_MESSAGE_TEMPLATE = "email_verification/template.html"
-VERIFICATION_SUCCESS_TEMPLATE = "email_verification/success.html"
-VERIFICATION_FAILED_TEMPLATE = "email_verification/failed.html"
+HTML_MESSAGE_TEMPLATE = "email_template.html"
+VERIFICATION_SUCCESS_TEMPLATE = "success.html"
+VERIFICATION_FAILED_TEMPLATE = "failed.html"
